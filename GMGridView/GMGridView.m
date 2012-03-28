@@ -1497,6 +1497,11 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     [self setNeedsLayout];
 }
 
+- (void)reloadObjectAtIndex:(NSInteger)index
+{
+    [self reloadObjectAtIndex:index withAnimation:GMGridViewItemAnimationNone];
+}
+
 - (void)reloadObjectAtIndex:(NSInteger)index animated:(BOOL)animated
 {
     [self reloadObjectAtIndex:index withAnimation:animated ? GMGridViewItemAnimationScroll : GMGridViewItemAnimationNone];
@@ -1580,6 +1585,11 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
      ];
 }
 
+- (void)insertObjectAtIndex:(NSInteger)index
+{
+    [self insertObjectAtIndex:index withAnimation:GMGridViewItemAnimationNone];
+}
+
 - (void)insertObjectAtIndex:(NSInteger)index animated:(BOOL)animated
 {
     [self insertObjectAtIndex:index withAnimation: animated ? GMGridViewItemAnimationScroll : GMGridViewItemAnimationNone];
@@ -1627,6 +1637,10 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     }
     
     [self setSubviewsCacheAsInvalid];
+}
+
+- (void)removeObjectAtIndex:(NSInteger)index{
+    [self removeObjectAtIndex:index withAnimation:GMGridViewItemAnimationNone];
 }
 
 - (void)removeObjectAtIndex:(NSInteger)index animated:(BOOL)animated
