@@ -1107,6 +1107,39 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     }
 }
 
+- (void)enterFullSizeModeForCellAtPosition:(NSInteger)position{
+    _transformingItem = [self cellForItemAtIndex:position];
+    
+    CGRect frameInMainView = [self convertRect:_transformingItem.frame toView:self.mainSuperView];
+    
+    [_transformingItem removeFromSuperview];
+    _transformingItem.frame = self.mainSuperView.bounds;
+    _transformingItem.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _transformingItem.contentView.frame = frameInMainView;
+    [self.mainSuperView addSubview:_transformingItem];
+    [self.mainSuperView bringSubviewToFront:_transformingItem];
+    
+    _transformingItem.fullSize = [self.transformDelegate GMGridView:self sizeInFullSizeForCell:_transformingItem atIndex:position inInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    _transformingItem.fullSizeView = [self.transformDelegate GMGridView:self fullSizeViewForCell:_transformingItem atIndex:position];
+    
+    if ([self.transformDelegate respondsToSelector:@selector(GMGridView:didStartTransformingCell:)]) 
+    {
+        [self.transformDelegate GMGridView:self didStartTransformingCell:_transformingItem];
+    }
+    
+    [_transformingItem switchToFullSizeMode:YES];
+    _transformingItem.backgroundColor = [[UIColor darkGrayColor] colorWithAlphaComponent:0.9];
+        
+    _inTransformingState = YES;
+    _inFullSizeMode = YES;
+    
+    if ([self.transformDelegate respondsToSelector:@selector(GMGridView:didEnterFullSizeForCell:)])
+    {
+        [self.transformDelegate GMGridView:self didEnterFullSizeForCell:_transformingItem];
+    }
+
+    
+}
 //////////////////////////////////////////////////////////////
 #pragma mark Tap gesture
 //////////////////////////////////////////////////////////////
@@ -1177,12 +1210,12 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 {
     NSArray *subviews = nil;
     
-    if (self.itemsSubviewsCacheIsValid) 
-    {
-        subviews = [self.itemSubviewsCache copy];
-    }
-    else
-    {
+//    if (self.itemsSubviewsCacheIsValid) 
+//    {
+//        subviews = [self.itemSubviewsCache copy];
+//    }
+//    else
+//    {
         @synchronized(self)
         {
             NSMutableArray *itemSubViews = [[NSMutableArray alloc] initWithCapacity:_numberTotalItems];
@@ -1200,7 +1233,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
             self.itemSubviewsCache = [subviews copy];
             _itemsSubviewsCacheIsValid = YES;
         }
-    }
+    //}
     
     return subviews;
 }
