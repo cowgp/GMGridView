@@ -1210,12 +1210,12 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 {
     NSArray *subviews = nil;
     
-//    if (self.itemsSubviewsCacheIsValid) 
-//    {
-//        subviews = [self.itemSubviewsCache copy];
-//    }
-//    else
-//    {
+    if (self.itemsSubviewsCacheIsValid) 
+    {
+        subviews = [self.itemSubviewsCache copy];
+    }
+    else
+    {
         @synchronized(self)
         {
             NSMutableArray *itemSubViews = [[NSMutableArray alloc] initWithCapacity:_numberTotalItems];
@@ -1233,7 +1233,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
             self.itemSubviewsCache = [subviews copy];
             _itemsSubviewsCacheIsValid = YES;
         }
-    //}
+    }
     
     return subviews;
 }
