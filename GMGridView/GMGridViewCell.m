@@ -98,7 +98,7 @@
     {
         CGPoint origin = CGPointMake((self.bounds.size.width - self.fullSize.width) / 2, 
                                      (self.bounds.size.height - self.fullSize.height) / 2);
-        self.fullSizeView.frame = CGRectMake(origin.x, origin.y, self.fullSize.width, self.fullSize.height);
+        self.fullSizeView.frame = CGRectMake(0, 0, self.fullSize.width, self.fullSize.height);
     }
     else
     {
@@ -257,6 +257,7 @@
     self.fullSizeView = nil;
     self.editing = NO;
     self.deleteBlock = nil;
+    _inFullSizeMode = NO;
 }
 
 - (void)shake:(BOOL)on
